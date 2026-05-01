@@ -1,0 +1,8 @@
+# files
+*.txt
+*.pyc
+
+
+# directories
+__pycache__/*
+
