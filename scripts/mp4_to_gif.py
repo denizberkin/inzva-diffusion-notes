@@ -1,0 +1,85 @@
+import numpy as np
+import cv2 as cv
+import matplotlib.pyplot as plt
+from matplotlib import animation, rc
+from time import time
+from tqdm import tqdm
+from typing import List, Tuple
+
+rc('animation', html='html5')
+
+TOTAL_STEPS = 5
+
+INITIAL_TIME = time()
+
+
+def read_file(filename: str, compression: float) -> Tuple[List[np.array], float]:
+    print(f'(1/{TOTAL_STEPS}) Reading video')
+    cap = cv.VideoCapture(filename)
+    fps = cap.get(cv.CAP_PROP_FPS)
+    frames = []
+
+    print(f'(2/{TOTAL_STEPS}) Extracting frames')
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+        frames.append(frame)
+
+    print(f'(3/{TOTAL_STEPS}) Compressing frames')
+    if compression < 100:
+        height, width, _ = frames[0].shape
+        height = int(round(height * compression / 100))
+        width = int(round(width * compression / 100))
+        frames = list(map(lambda x: cv.resize(x, (width, height)), frames))
+    cap.release()
+    return frames, fps
+
+
+def save_file(filename: str, frames: List[np.array], fps: float, backend: str, loop: int = 0):
+    print(f'(4/{TOTAL_STEPS}) Assembling frames')
+    height, width, _ = frames[0].shape
+    dpi = 100
+    ims = []
+    fig = plt.figure(figsize=(width/dpi, height/dpi), dpi=dpi)
+    ax = plt.Axes(fig, [0, 0, 1, 1])
+    ax.set_axis_off()
+    fig.add_axes(ax)
+    for i, frame in enumerate(tqdm(frames)):
+        im = ax.imshow(frame, animated=True)
+        ims.append([im])
+    anim = animation.ArtistAnimation(fig, ims)
+    if not filename.endswith('.gif'):
+        filename += '.gif'
+    savename = filename
+
+    print(f'(5/{TOTAL_STEPS}) Rendering GIF (Loop: {"Infinite" if loop == 0 else loop})')
+    save_kwargs = {'writer': backend, 'fps': int(fps)}
+    if backend == 'pillow':
+        save_kwargs['savefig_kwargs'] = {'params': {'loop': loop}}
+        
+    try:
+        anim.save(savename, **save_kwargs)
+    except Exception as e:
+        # fallback to default backend
+        print(e)
+        print('Falling back to Pillow...')
+        anim.save(savename, writer='pillow', fps=int(fps), savefig_kwargs={"loop": loop})
+    plt.close(fig)
+
+    end_time = time()
+    delta_time = end_time - INITIAL_TIME
+    if delta_time >= 60:
+        delta_min = delta_time // 60
+        delta_sec = round(delta_time % 60, 2)
+        delta_str = f'{delta_min} min {delta_sec} s'
+    else:
+        delta_str = f'{round(delta_time, 2)} s'
+    print(f'Done in {delta_str}')
+
+
+
+def convert(fn: str, outfn: str, compression: int = 100, loop: int = 0):
+    frames, fps = read_file(fn, compression)
+    save_file(outfn, frames, fps, 'ffmpeg', loop=loop)
