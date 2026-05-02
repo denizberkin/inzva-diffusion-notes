@@ -9,14 +9,20 @@
 # **0.1 Outline**
 
 - Initial focus will be on the unconditioned generation for simplicity.
-![outline](assets/outline.svg)
+
+<div style="text-align: center;">
+  <img src="assets/outline.svg" alt="outline" />
+</div>
 
 ---
 
 # **0.2 Idea**
 
 - Understand a way to sample an observation from a distribution that is **new**.
-![sampling](assets/new_sample.svg)
+
+<div style="text-align: center;">
+  <img src="assets/new_sample.svg" alt="new_sample" />
+</div>
 
 ---
 
@@ -35,7 +41,9 @@ Starting from $x_0$, input image:
 - Add noise $q(x_t \mid x_{t-1})$ for $T$ steps: $x_1, x_2, ..., x_T$.
 - Learn the reverse process $p_\theta(x_{t-1} \mid x_t)$ for $T$ steps: $x_T, x_{T-1}, ..., x_0$.
 
-![forward_formula](assets/fwd_bwd_combined.svg)
+<div style="text-align: center;">
+  <img src="assets/fwd_bwd_combined.svg" alt="forward_backward" />
+</div>
 
 ---
 
@@ -102,10 +110,63 @@ $\sigma^2$ is the variance and $I$ is the identity matrix.
 
 ---
 
+# **0.6 Covariance?**
+
+**It is just a quantifier of how two random variables vary in a linear way.**
+You may also call this the **joint variability** of two random variables.
+
+<div style="text-align: center;">
+  <img src="assets/covariance.png" alt="covariance" width="70%" />
+</div>
+
+---
+
 # **1. Forward Process**
 
 - Starting from $x_0$
-![forward](assets/forward_process_hq.gif)
+
+<div style="text-align: center;">
+  <img src="assets/forward_process.gif" alt="forward" />
+</div>
+
+---
+
+# **1.1 Representing Noise**
+
+$$
+\epsilon = \begin{pmatrix}
+\epsilon_{1} \\
+\epsilon_{2} \\
+\vdots \\
+\epsilon_{n}
+\end{pmatrix}
+\sim \mathcal{N}(0, I)
+$$
+
+$\epsilon_i \sim \mathcal{N}(0, 1)$ is **independent** and **identically distributed**.
+
+---
+
+# **1.2 The Process**
+
+<div style="text-align: center;">
+  <img src="assets/forward_step.svg" alt="forward_step" />
+</div>
+
+---
+
+# **1.3 Details on Forward Process**
+
+At each step, we sample:
+
+$$
+q(x_t \mid x_{t-1}) = \mathcal{N}\left(x_t;\sqrt{1-\beta_t}x_{t-1},\beta_t I\right)
+$$
+
+- $\beta_t$ controls how much noise is added at step $t$
+- small $\beta_t$ → little corruption
+- large $\beta_t$ → stronger corruption
+- $I$ means independent Gaussian noise per pixel/channel
 
 ---
 
