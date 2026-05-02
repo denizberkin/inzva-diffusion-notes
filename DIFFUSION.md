@@ -11,7 +11,6 @@
 - Initial focus will be on the unconditioned generation for simplicity.
 ![outline](assets/outline.svg)
 
-
 ---
 
 # **0.2 Idea**
@@ -28,6 +27,8 @@ Why start from noise?
 - Noise $\sim$ Gaussian and we love Gaussian.
 - Surprisingly simple.
 
+---
+
 # **0.4 Intuition**
 
 Starting from $x_0$, input image:
@@ -36,10 +37,13 @@ Starting from $x_0$, input image:
 
 ![forward_formula](assets/fwd_bwd_combined.svg)
 
+---
+
 # **0.5 Dimensionality & Probability Distribution**
 
 There are multiple ways to represent your images. In the end, when we talk about images, we are talking about **vectors**.
 So for a 3 channel RGB image: $n = 3 \times H \times W$
+
 $$
 x_0 = \begin{pmatrix}
 x_{1} \\
@@ -84,6 +88,7 @@ x_{n}
 $$
 
 **Note**: The covariance matrix $\Sigma$ is symmetric and we will only focus on **isotropic** Gaussians where:
+
 $$
 \Sigma = \sigma^2 I = \begin{pmatrix}
 \sigma^2 & 0 & \cdots & 0 \\
@@ -92,6 +97,7 @@ $$
 0 & 0 & \cdots & \sigma^2
 \end{pmatrix}
 $$
+
 $\sigma^2$ is the variance and $I$ is the identity matrix.
 
 ---
