@@ -1,8 +1,12 @@
 # files
 *.txt
 *.pyc
+# pass high qualitf gifs, upload low qual ones 
+*_hq.gif
+*.mp4
 
 
 # directories
 __pycache__/*
-
+tmp_diffusion_frames/
+media/
