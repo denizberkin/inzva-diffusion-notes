@@ -285,6 +285,32 @@ $=\underbrace{p(x_1 \mid x_2)}_{x_1 \text{ given } x_2}\times p(x_2)$
   <img src="assets/joint_marginalization.gif" alt="joint_marginalization" />
 </div>
 
+So, if we want to find the probability distribution of $x_1$ alone, we can marginalize out $x_2$ or vice versa:
+
+$$p(x_1) = \int p(x_1, x_2) dx_2$$
+
+Applying for all the time steps:
+
+<div style="text-align: center;">
+  <img src="assets/full_marginalization.gif" alt="full_marginalization" />
+</div>
+
+# **TODO**: ADD 3D VISUAL FOR JOINT PROBABILITY DISTRIBUTION
+
+---
+
+## **2.1.2 Joint Probability Distribution - Summarize**
+
+**Joint Probability Distribution**
+
+$$p(x_1, x_2, \ldots, x_T) = p(x_1) \times p(x_2 \mid x_1) \times \cdots \times p(x_T \mid x_{T-1})$$
+
+**Marginalization**
+
+$$p(x_1) = \int p(x_1, x_2, \ldots, x_T) dx_2 \cdots dx_T $$
+
+**Another notation**: $p(x_1, x_2, \ldots, x_T) = p(x_{1:T})$
+
 ---
 
 # **3. Variationality**
