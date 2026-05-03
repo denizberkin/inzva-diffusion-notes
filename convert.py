@@ -1,4 +1,8 @@
-"""convert mp4 to gif to be used in markdowns etc."""
+"""
+convert mp4 to gif to be used in markdowns etc.
+# CAREFUL: high ram usage in compression
+"""
+
 
 import os
 import argparse
