@@ -147,7 +147,7 @@ $\epsilon_i \sim \mathcal{N}(0, 1)$ is **independent** and **identically distrib
 
 ---
 
-# **1.2 The Process**
+# **1.2 Single Forward Step**
 
 <div style="text-align: center;">
   <img src="assets/forward_step.svg" alt="forward_step" />
@@ -155,7 +155,7 @@ $\epsilon_i \sim \mathcal{N}(0, 1)$ is **independent** and **identically distrib
 
 ---
 
-# **1.3 Details on Forward Process**
+# **1.3 Deriving the Forward Process**
 
 At each step, we sample:
 
@@ -167,6 +167,68 @@ $$
 - small $\beta_t$ → little corruption
 - large $\beta_t$ → stronger corruption
 - $I$ means independent Gaussian noise per pixel/channel
+
+$$x_t = \sqrt{1-\beta_t}\cdot x_{t-1} + \
+\sqrt{\beta_{t}}\cdot\epsilon_t, \quad \epsilon \sim \mathcal{N}(0, I)
+$$
+
+After reparameterization, $x_t$ can be expressed in terms of $x_0$ and $\epsilon$;
+
+$$
+x_t = \sqrt{\bar\alpha_t}\cdot x_{0} + \
+\sqrt{1-\bar\alpha_{t}}\cdot\epsilon, \quad \epsilon \sim \mathcal{N}(0, I)
+$$
+
+**But how did we get here?!**
+
+---
+
+# **1.4 Diving Deeper**
+
+Let's define $\alpha_t = 1 - \beta_t$, updated process will become:
+
+$$x_t = \sqrt{\alpha_t}\cdot\underbrace{x_{t-1}}_{\downarrow} + \sqrt{1-\alpha_{t}}\cdot\epsilon_t$$
+
+$$x_{t-1} = \sqrt{\alpha_{t-1}}\cdot{x_{t-2}} + \sqrt{1-\alpha_{t-1}}\cdot\epsilon_{t-1}$$
+
+Replacing $x_{t-1}$ in the first equation:
+
+$$
+x_{t} = 
+\sqrt{\alpha_t\cdot\alpha_{t-1}}\cdot x_{t-2} + 
+\sqrt{\alpha_t\cdot(1-\alpha_{t-1})}\cdot\epsilon_{t-1} + 
+\sqrt{1-\alpha_{t}}\cdot\epsilon_t
+$$
+
+It actually turns out for any number of independent variables that are drawn from a Gaussian, you can combine the terms together to get a single $\mu$ and $\sigma^2$.
+
+$$x_t = \sqrt{\alpha_t\cdot\alpha_{t-1}}\cdot x_{t-2} + \sqrt\sigma_{combined}\cdot\epsilon$$
+
+
+**How do we add two independent Gaussian variables together?**
+
+- Term 1 $x$: $\underbrace{\sqrt{\alpha_t\cdot(1-\alpha_{t-1})}}_{\sigma_1}\cdot\epsilon_{t-1}$
+- Term 2 $y$: $\underbrace{\sqrt{1-\alpha_{t}}}_{\sigma_2}\cdot\epsilon_t$
+
+$$\epsilon_{t-1} \sim \mathcal{N}(0, \sigma_1^2), \quad \epsilon_{t} \sim \mathcal{N}(0, \sigma_2^2) \quad \epsilon_{t-1} \perp \epsilon_t$$
+
+**BIG NOTE: Sum of independent Gaussians variance is the sum of their variances**
+
+$$=\alpha_t\cdot(1-\alpha_{t-1}) + (1-\alpha_{t})$$
+
+$$=1-\alpha_t\cdot\alpha_{t-1}$$
+
+Replacing the equation for combined $\sigma^2$ back into the equation for $x_t$:
+
+$$x_t = \sqrt{1-\alpha_t\cdot\alpha_{t-1}}\cdot x_{t-2} + \sqrt{1-\alpha_t\cdot\alpha_{t-1}}\cdot\epsilon$$
+
+If we keep expanding this process, we can generalize that:
+
+$$x_t = \sqrt{\bar\alpha_t}\cdot x_{0} + \sqrt{1-\bar\alpha_{t}}\cdot\epsilon$$
+
+Where:
+- $\bar\alpha_t = \prod_{s=1}^t \alpha_s$
+- $\epsilon \sim \mathcal{N}(0, I)$
 
 ---
 
