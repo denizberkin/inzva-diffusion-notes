@@ -265,7 +265,7 @@ $$\max_{\theta} \quad \mathbb{E}_{q(x_{1:T})}\left[\log p_\theta(x_0)\right]
 
 **Rephrasing**: We want to find the model parameters $\theta$ that maximise the likelihood of the observed data under the model $p$
 
-Note: We are using $log$ because it has nice properties and provides computational stability.
+Note: We are using $\log$ because it has nice properties and provides computational stability.
 
 ---
 
@@ -313,6 +313,47 @@ $$p(x_1) = \int p(x_1, x_2, \ldots, x_T) dx_2 \cdots dx_T $$
 
 ---
 
+## **2.2 Back to the Objective**
+
+<p align="center"><b>How to compute?</b></p>
+
+$$\log p_\theta(x_0)$$
+
+One idea, *marginalization*: $\log p_\theta(x_0) = \log \int p_\theta(x_0, x_{1:T}) dx_{1:T}$
+
+The problem with this is that marginalizing from noise to clean image for all trajectories is not viable to compute.
+
+---
+
+## **2.3 Possible Strategy on how to compute $\log p_\theta(x_0)$**
+
+If you have already heard, this will be about **ELBO** (Evidence Lower Bound).
+
+1. Derive a **lower bound** for the maximum likelihood objective $\log p_\theta(x_0)$.
+2. Expand the lower bound terms
+3. Show lower bound is **tractable**, meaning solvable in polynomial time at most.
+4. Deduce loss function $\Leftrightarrow$ **training objective**
+
+---
+
+## **2.4 Deriving ELBO**
+
+1. Derive a **lower bound**
+
+$$\mathbb{E}_{x_0\sim q (x_0)} \left(\log p_\theta (x_0)\right) \underbrace{\geq \mathbb{E}_{x_0\sim q(x_{0:T})} \left(\log \frac{p_\theta(x_{0:T})}{q(x_{1:T} \mid x_{0})} \right)}_{\text{\textbf{ELBO}= \textbf{E}vidence \textbf{Lower} \textbf{BO}und }} $$
+
+A bit scary.
+
+How do we get here?
+
+# TODO: DERIVATION UNTIL JENSEN INEQUALITY
+
+<div style="text-align: center;">
+  <img src="assets/jensen_inequality.gif" alt="jensen_inequality" />
+</div>
+
+---
+
 # **3. Variationality**
 
 
@@ -328,7 +369,7 @@ $$p(x_1) = \int p(x_1, x_2, \ldots, x_T) dx_2 \cdots dx_T $$
 
 ---
 
-# **6. Sampling --- **
+# **6. Sampling ---**
 
 
 # **References**
@@ -341,9 +382,12 @@ $$p(x_1) = \int p(x_1, x_2, \ldots, x_T) dx_2 \cdots dx_T $$
   Diffusion & Large Vision Models Course  
   https://cme296.stanford.edu/syllabus/
 
-
+- <a id="intelligent-systems-lab"></a> **\[3] Intelligent Systems Lab**
+  Video lectures on probability, distributions, and related topics.
+  https://www.youtube.com/@intelligentsystemslab907/videos
 
  <!-- Actual referred list using [text][referral_number]  -->
 
 [1]: https://arxiv.org/abs/2006.11239
 [2]: https://cme296.stanford.edu/syllabus/
+[3]: https://www.youtube.com/@intelligentsystemslab907/videos
