@@ -252,11 +252,13 @@ Going back to the forward-backward diagram:
 
 **We want to learn the $p_\theta$**
 
-$\max\limits_{\theta} \quad p_\theta(x_0)\rightarrow \text{ maximise } p_\theta$ 
+$$\max_{\theta} \quad p_\theta(x_0)\rightarrow \text{maximise } p_\theta(x_0)$$
 
-$\max\limits_{\theta} \quad \log p_\theta(x_0)\rightarrow \text{ maximise log-likelihood of } p_\theta$
+$$\max_{\theta} \quad \log p_\theta(x_0)  
+\rightarrow \text{maximise the log-likelihood of } x_0 \text{ under } p_\theta$$
 
-$\max\limits_{\theta} \quad \mathbb{E}_{q(x_{1:T})}[\log p_\theta(x_0)]\rightarrow \text{maximise the expectation of}\; \log p_\theta(x_0) \;\text{over the distribution of}\; x_{1:T}$
+$$\max_{\theta} \quad \mathbb{E}_{q(x_{1:T})}\left[\log p_\theta(x_0)\right]
+\rightarrow \text{maximise the expectation of } \log p_\theta(x_0) \text{ over the distribution of } x_{1:T}$$
 
 
 **Rephrasing**: We want to find the model parameters $\theta$ that maximise the likelihood of the observed data under the model $p$
@@ -270,6 +272,7 @@ Note: We are using $log$ because it has nice properties and provides computation
 For two probability distributions $x_1$ and $x_2$, we can express their relationship with conditional probabilities:
 
 $p(x_1, x_2)$ is either:
+
 $=\underbrace{p(x_2 \mid x_1)}_{x_2 \text{ given } x_1}\times p(x_1)$
 
 $=\underbrace{p(x_1 \mid x_2)}_{x_1 \text{ given } x_2}\times p(x_2)$
