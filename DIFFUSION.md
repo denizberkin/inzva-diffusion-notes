@@ -6,7 +6,7 @@
 
 ---
 
-# **0.1 Outline**
+## **0.1 Outline**
 
 - Initial focus will be on the unconditioned generation for simplicity.
 
@@ -16,7 +16,7 @@
 
 ---
 
-# **0.2 Idea**
+## **0.2 Idea**
 
 - Understand a way to sample an observation from a distribution that is **new**.
 
@@ -26,7 +26,7 @@
 
 ---
 
-# **0.3 Generate from Noise**
+## **0.3 Generate from Noise**
 
 Why start from noise?
 - Inherent randomness
@@ -35,7 +35,7 @@ Why start from noise?
 
 ---
 
-# **0.4 Intuition**
+## **0.4 Intuition**
 
 Starting from $x_0$, input image:
 - Add noise $q(x_t \mid x_{t-1})$ for $T$ steps: $x_1, x_2, ..., x_T$.
@@ -47,7 +47,7 @@ Starting from $x_0$, input image:
 
 ---
 
-# **0.5 Dimensionality & Probability Distribution**
+## **0.5 Dimensionality & Probability Distribution**
 
 There are multiple ways to represent your images. In the end, when we talk about images, we are talking about **vectors**.
 So for a 3 channel RGB image: $n = 3 \times H \times W$
@@ -110,7 +110,7 @@ $\sigma^2$ is the variance and $I$ is the identity matrix.
 
 ---
 
-# **0.6 Covariance?**
+## **0.6 Covariance?**
 
 **It is just a quantifier of how two random variables vary in a linear way.**
 You may also call this the **joint variability** of two random variables.
@@ -131,7 +131,7 @@ You may also call this the **joint variability** of two random variables.
 
 ---
 
-# **1.1 Representing Noise**
+## **1.1 Representing Noise**
 
 $$
 \epsilon = \begin{pmatrix}
@@ -147,7 +147,7 @@ $\epsilon_i \sim \mathcal{N}(0, 1)$ is **independent** and **identically distrib
 
 ---
 
-# **1.2 Single Forward Step**
+## **1.2 Single Forward Step**
 
 <div style="text-align: center;">
   <img src="assets/forward_step.svg" alt="forward_step" />
@@ -155,7 +155,7 @@ $\epsilon_i \sim \mathcal{N}(0, 1)$ is **independent** and **identically distrib
 
 ---
 
-# **1.3 Deriving the Forward Process**
+## **1.3 Deriving the Forward Process**
 
 At each step, we sample:
 
@@ -183,7 +183,7 @@ $$
 
 ---
 
-# **1.4 Diving Deeper**
+## **1.4 Diving Deeper**
 
 Let's define $\alpha_t = 1 - \beta_t$, updated process will become:
 
@@ -230,9 +230,41 @@ Where:
 - $\bar\alpha_t = \prod_{s=1}^t \alpha_s$
 - $\epsilon \sim \mathcal{N}(0, I)$
 
+**Key Takeaways**:
+- Combining multiple independent Gaussians helped us derive a closed-form expression for $x_t$ in terms of $x_0$ and $\epsilon$.
+- We can directly sample $x_t$ at any time step $t$ without any intermediate steps.
+
 ---
 
-# **2. Backward Process**
+# **2. Reverse Process**
+
+Going back to the forward-backward diagram:
+
+<div style="text-align: center;">
+  <img src="assets/fwd_bwd_combined.svg" alt="forward_backward" />
+</div>
+
+---
+
+## **2.0 Objective**
+
+**We want to learn the $p_\theta$**
+
+$\max\limits_{\theta} \quad p_\theta(x_0)\rightarrow$ maximise $p_\theta$
+
+$\max\limits_{\theta} \quad \log p_\theta(x_0)\rightarrow$ maximise log-likelihood of $p_\theta$
+
+$\max\limits_{\theta} \quad \mathbb{E}_{q(x_{1:T})}[\log p_\theta(x_0)]$ $\rightarrow$ maximise the expectation of $\log p_\theta(x_0)$ over the distribution of $x_{1:T}$
+
+**Rephrasing**: We want to find the model parameters $\theta$ that maximise the likelihood of the observed data under the model $p$
+
+Note: We are using $log$ because it has nice properties and provides computational stability.
+
+---
+
+## **2.1 Joint Probability Distributions**
+
+TODO: ^^
 
 ---
 
@@ -242,6 +274,7 @@ Where:
 ---
 
 # **4. Training**
+
 
 ---
 
