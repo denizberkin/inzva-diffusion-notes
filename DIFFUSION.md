@@ -63,6 +63,7 @@ $$
 
 What this means for the distributions we will be working with:
 **Single value $\approx$ vector of values.**
+
 $$
 x \sim \mathcal{N}(\mu, \Sigma)
 $$
@@ -208,6 +209,7 @@ $$x_t = \sqrt{\alpha_t\cdot\alpha_{t-1}}\cdot x_{t-2} + \sqrt\sigma_{combined}\c
 **How do we add two independent Gaussian variables together?**
 
 - Term 1 $x$: $\underbrace{\sqrt{\alpha_t\cdot(1-\alpha_{t-1})}}_{\sigma_1}\cdot\epsilon_{t-1}$
+
 - Term 2 $y$: $\underbrace{\sqrt{1-\alpha_{t}}}_{\sigma_2}\cdot\epsilon_t$
 
 $$\epsilon_{t-1} \sim \mathcal{N}(0, \sigma_1^2), \quad \epsilon_{t} \sim \mathcal{N}(0, \sigma_2^2) \quad \epsilon_{t-1} \perp \epsilon_t$$
@@ -250,11 +252,11 @@ Going back to the forward-backward diagram:
 
 **We want to learn the $p_\theta$**
 
-$\max\limits_{\theta} \quad p_\theta(x_0)\rightarrow$ maximise $p_\theta$
+- $\max\limits_{\theta} \quad p_\theta(x_0)\rightarrow$ maximise $p_\theta$ 
 
-$\max\limits_{\theta} \quad \log p_\theta(x_0)\rightarrow$ maximise log-likelihood of $p_\theta$
+- $\max\limits_{\theta} \quad \log p_\theta(x_0)\rightarrow$ maximise log-likelihood of $p_\theta$
 
-$\max\limits_{\theta} \quad \mathbb{E}_{q(x_{1:T})}[\log p_\theta(x_0)]$ $\rightarrow$ maximise the expectation of $\log p_\theta(x_0)$ over the distribution of $x_{1:T}$
+- $\max\limits_{\theta} \quad \mathbb{E}_{q(x_{1:T})}[\log p_\theta(x_0)]$ $\rightarrow$ maximise the expectation of $\log p_\theta(x_0)$ over the distribution of $x_{1:T}$
 
 **Rephrasing**: We want to find the model parameters $\theta$ that maximise the likelihood of the observed data under the model $p$
 
@@ -264,7 +266,11 @@ Note: We are using $log$ because it has nice properties and provides computation
 
 ## **2.1 Joint Probability Distributions**
 
-TODO: ^^
+For two probability distributions $x_1$ and $x_2$, we can express their relationship with conditional probabilities:
+
+$p(x_1, x_2)$ is either:
+- $=\underbrace{p(x_2 \mid x_1)}_{x_2 \text{ given } x_1}\times p(x_1)$
+- $=\underbrace{p(x_1 \mid x_2)}_{x_1 \text{ given } x_2}\times p(x_2)$
 
 ---
 
