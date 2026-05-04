@@ -336,21 +336,127 @@ If you have already heard, this will be about **ELBO** (Evidence Lower Bound).
 
 ---
 
-## **2.4 Deriving ELBO**
+## **2.4 ELBO**
 
 1. Derive a **lower bound**
 
-$$\mathbb{E}_{x_0\sim q (x_0)} \left(\log p_\theta (x_0)\right) \underbrace{\geq \mathbb{E}_{x_0\sim q(x_{0:T})} \left(\log \frac{p_\theta(x_{0:T})}{q(x_{1:T} \mid x_{0})} \right)}_{\text{\textbf{ELBO}= \textbf{E}vidence \textbf{Lower} \textbf{BO}und }} $$
+$$\mathbb{E}_{x_0\sim q (x_0)} \left[\log p_\theta (x_0)\right] \underbrace{\geq \mathbb{E}_{x_0\sim q(x_{0:T})} \left(\log \frac{p_\theta(x_{0:T})}{q(x_{1:T} \mid x_{0})} \right)}_{\text{\textbf{ELBO}= \textbf{E}vidence \textbf{Lower} \textbf{BO}und }} $$
 
 A bit scary.
 
 How do we get here?
 
-# TODO: DERIVATION UNTIL JENSEN INEQUALITY
+---
+
+## **2.4.1 Derivation**
+
+Given a clean image, what is the trajectory that is given by $q$ ($q$ as in the forward process)?
+
+$$=q(x_{1:T} \mid x_0)$$
+
+Using this in the objective, to re-write $p_\theta$:
+
+$$p_\theta(x_0) = \int p_\theta(x_{0:T}) dx_{1:T}$$
+
+$$p_\theta(x_0) = \int \frac{p_\theta(x_{0:T}) \times q(x_{1:T} \mid x_0)}{q(x_{1:T} \mid x_0)} dx_{1:T}$$
+
+---
+
+## **2.4.2 General Identity to convert between: $\int \Leftrightarrow \mathbb{E}$**
+
+A probability density function $g(x)$ i.e.
+
+$$\int g(x) dx = 1$$
+
+Expectation of a function $f(x)$ under $g$ is defined as:
+
+$$\mathbb{E}_{g}[f(x)] = \int f(x) g(x) dx$$
+
+---
+
+## **2.4.3 Applying the identity**
+
+$$p_\theta(x_0) = \int \overbrace{\frac{p_\theta(x_{0:T})}{q(x_{1:T} \mid x_0)}}^{f(x)} \times \underbrace{q(x_{1:T} \mid x_0)}_{g(x)} dx_{1:T}$$
+
+Replacing with the expectation definition:
+
+$$= \mathbb{E}_{q(x_{1:T} \mid x_0)}\left[\frac{p_\theta(x_{0:T})}{q(x_{1:T} \mid x_0)}\right]$$
+
+What this this quantity suggests is $p_\theta(x_0)$ corresponds to the expectation of $p_\theta$ over $q$ by **sampling $x_{1:T}$ via the forward process** we have defined.
+
+Where do you go from here?
+
+---
+
+## **2.4.4 Jensen's Inequality**
+
+Jensen's inequality is a commonly used trick that states, for a function $f$ and a random distribution $X$:
+
+If $f$ is convex, then:
+
+$$f(\mathbb{E}[X]) \leq \mathbb{E}[f(X)]$$
+
+If $f$ is concave, then the sign is flipped.
+
+For $f(x) = \log(x)$, we know $\log$ is concave by:
+
+$$f''(x) = -\frac{1}{x^2} < 0 \quad \forall x > 0 $$
+
+So for a random variable $X$, $\log(\mathbb{E}[X]) \geq \mathbb{E}[\log(X)]$
+
 
 <div style="text-align: center;">
   <img src="assets/jensen_inequality.gif" alt="jensen_inequality" />
 </div>
+
+---
+
+## **2.4.5 Applying Jensen's Inequality**
+
+$$p_\theta(x_0) = \mathbb{E}_{q(x_{1:T} \mid x_0)}\left[\frac{p_\theta(x_{0:T})}{q(x_{1:T} \mid x_0)}\right]$$
+
+Apply the inequality:
+
+$$\log(p_\theta(x_0)) \geq \mathbb{E}_{q(x_{1:T} \mid x_0)}\left[\log \frac{p_\theta(x_{0:T})}{q(x_{1:T} \mid x_0)}\right]$$
+
+The objective from the start was to maximise $\log p_\theta(x_0)$:
+
+$$\max_{\theta} \; \log p_\theta(x_0)$$
+
+$$\mathbb{E}_{x_0\sim q(x_0)}\left[\log p_\theta(x_0)\right] \geq \ldots$$
+
+Now, we have found a lower bound for the value we wanted to maximise, we can just maximise the lower bound itself ^^.
+
+**Important Note**: So it is quite hard to see but instead of summing through all the possible trajectories, in **ELBO** form, we are only summing trajectories that we are sampling from the forward process.
+
+---
+
+## **2.4.6 What's Next?**
+
+1. **[DONE]** Derive a **lower bound** for the maximum likelihood objective $\log p_\theta(x_0)$.
+2. **[TBD]** Expand the lower bound terms
+3. **[TBD]** Show lower bound is **tractable**, meaning solvable in polynomial time at most.
+4. Deduce loss function $\Leftrightarrow$ **training objective**
+
+---
+
+## **2.5 Expanding the ELBO**
+
+---
+
+## **2.5.1 KL Divergence**
+
+<div style="text-align: center;">
+  <img src="assets/kl_divergence.gif" alt="kl_divergence" />
+</div>
+
+We will mostly be working with the continuous KL divergence, which is defined as:
+
+$$D_{KL}(P \parallel Q) = \int p(x) \log \frac{p(x)}{q(x)} dx = \mathbb{E}_{x \sim P} \left[ \log \frac{p(x)}{q(x)} \right]$$
+
+---
+
+
 
 ---
 
@@ -386,8 +492,20 @@ How do we get here?
   Video lectures on probability, distributions, and related topics.
   https://www.youtube.com/@intelligentsystemslab907/videos
 
+- <a id="jensen-inequality"></a> **\[4] Jensen's Inequality**  
+  https://en.wikipedia.org/wiki/Jensen%27s_inequality
+
+- <a id="kl-divergence"></a> **\[5] KL Divergence**  
+  Kullback–Leibler divergence  
+  https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
+
+
+
+
  <!-- Actual referred list using [text][referral_number]  -->
 
 [1]: https://arxiv.org/abs/2006.11239
 [2]: https://cme296.stanford.edu/syllabus/
 [3]: https://www.youtube.com/@intelligentsystemslab907/videos
+[4]: https://en.wikipedia.org/wiki/Jensen%27s_inequality
+[5]: https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
