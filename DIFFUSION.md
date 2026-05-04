@@ -317,9 +317,9 @@ $$p(x_1) = \int p(x_1, x_2, \ldots, x_T) dx_2 \cdots dx_T $$
 
 <p align="center"><b>How to compute?</b></p>
 
-$$\log p_\theta(x_0)$$
+$$\log (p_\theta(x_0))$$
 
-One idea, *marginalization*: $\log p_\theta(x_0) = \log \int p_\theta(x_0, x_{1:T}) dx_{1:T}$
+One idea, **marginalization**: $\log (p_\theta(x_0)) = \log \int p_\theta(x_0, x_{1:T}) dx_{1:T}$
 
 The problem with this is that marginalizing from noise to clean image for all trajectories is not viable to compute.
 
@@ -336,7 +336,7 @@ If you have already heard, this will be about **ELBO** (Evidence Lower Bound).
 
 ---
 
-## **2.4 ELBO**
+## **2.4 ELBO (1)**
 
 1. Derive a **lower bound**
 
@@ -344,7 +344,7 @@ $$\mathbb{E}_{x_0\sim q (x_0)} \left[\log p_\theta (x_0)\right] \underbrace{\geq
 
 A bit scary.
 
-How do we get here?
+Actually, how can such a thing be derived?
 
 ---
 
@@ -421,7 +421,7 @@ $$\log(p_\theta(x_0)) \geq \mathbb{E}_{q(x_{1:T} \mid x_0)}\left[\log \frac{p_\t
 
 The objective from the start was to maximise $\log p_\theta(x_0)$:
 
-$$\max_{\theta} \; \log p_\theta(x_0)$$
+$$\max_{\theta} \quad \log p_\theta(x_0)$$
 
 $$\mathbb{E}_{x_0\sim q(x_0)}\left[\log p_\theta(x_0)\right] \geq \ldots$$
 
@@ -440,7 +440,7 @@ Now, we have found a lower bound for the value we wanted to maximise, we can jus
 
 ---
 
-## **2.5 Expanding the ELBO**
+## **2.5 Expanding the ELBO (2)**
 
 **2. Expand the terms of lower bound**
 
@@ -479,7 +479,7 @@ $$ELBO= -\sum_{t=2}^T D_{KL}(\underbrace{q(x_{t-1} \mid x_t, x_0)}_{\text{tracta
 
 ---
 
-## **2.6 Show Tractability**
+## **2.6 Show Tractability (3)**
 
 3. Show lower bound is **tractable**:
 
@@ -513,7 +513,7 @@ $$p_\theta(x_{t-1} \mid x_t) = \mathcal{N}(\mu_\theta(x_t), \Sigma_\theta(x_t))$
 
 ---
 
-## **2.7 Deduce Loss Function**
+## **2.7 Deduce Loss Function (4)**
 
 4. Deduce loss function $\Leftrightarrow$ **training objective**
 
@@ -556,21 +556,17 @@ $$\mathcal{L}=\mathbb{E}_{q} \left[ \log \frac{p(x_T)\times\prod_{t=1}^T p_\thet
 
 **Apply log properties:**
 
-$$\log(\frac{a\times b}{c}) = \log(a) + \log(b) - \log(c)$$
-
-and
-
-$$\log \prod_{t=1}^T a_t = \sum_{t=1}^T \log(a_t)$$
+$$\log(\frac{a\times b}{c}) = \log(a) + \log(b) - \log(c), \quad \log \prod_{t=1}^T a_t = \sum_{t=1}^T \log(a_t)$$
 
 **So the ELBO becomes**
 
 $$\mathcal{L}= \mathbb{E}_{q} \left[ \log p(x_T) + \sum_{t=1}^T \log p_\theta(x_{t-1} \mid x_t) - \sum_{t=1}^T \log q(x_t \mid x_{t-1}) \right] $$
 
-Rearrange terms considering the forward chain below:
+**Rearrange terms considering the forward chain below:**
 
 $$q(x_{1:T} \mid x_0) = q(x_T \mid x_0)\prod_{t=2}^T q(x_{t-1} \mid x_t, x_0) $$
 
-Plugging this into the ELBO formula:
+**Plugging this into the ELBO formula:**
 
 $$\mathcal{L} = \mathbb{E}_{q} \left[ \log \frac{p(x_T)}{q(x_T \mid x_0)} + \sum_{t=2}^T \log \frac{p_\theta(x_{t-1} \mid x_t)}{q(x_{t-1} \mid x_t, x_0)} + \log p_\theta(x_0 \mid x_1) \right] $$
 
@@ -578,7 +574,7 @@ $$\mathcal{L} = \mathbb{E}_{q} \left[ \log \frac{p(x_T)}{q(x_T \mid x_0)} + \sum
 
 $$D_{\text{KL}}(q \parallel p) = \mathbb{E}_q \left[ \log \frac{q}{p} \right] $$
 
-Therefore,
+**Therefore,**
 
 $$\mathbb{E}_{q} \left[ \log \frac{p_\theta(x_{t-1} \mid x_t)}{q(x_{t-1} \mid x_t, x_0)} \right] = -D_{\text{KL}}(q(x_{t-1} \mid x_t, x_0) \parallel p_\theta(x_{t-1} \mid x_t))$$
 
@@ -625,7 +621,7 @@ $$
   - Derived via ELBO → KL minimization
   - Minimize the expectation of the L2 distance between true and predicted noise at arbitrary time steps: 
 
-  $$\mathcal{L} = \mathbb{E}_{t, x_0, \epsilon} \left[\|\epsilon - \epsilon_\theta(x_t, t)\|^2\right]$$
+$$\mathcal{L} = \mathbb{E}_{t, x_0, \epsilon} \left[\|\epsilon - \epsilon_\theta(x_t, t)\|^2\right]$$
 
 ---
 
