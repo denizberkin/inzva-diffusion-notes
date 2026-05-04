@@ -442,9 +442,13 @@ Now, we have found a lower bound for the value we wanted to maximise, we can jus
 
 ## **2.5 Expanding the ELBO**
 
+**2. Expand the terms of lower bound**
+
 ---
 
 ## **2.5.1 KL Divergence**
+
+Measurement of how one probability distribution $P$ is different from another probability distribution $Q$.
 
 <div style="text-align: center;">
   <img src="assets/kl_divergence.gif" alt="kl_divergence" />
@@ -454,7 +458,59 @@ We will mostly be working with the continuous KL divergence, which is defined as
 
 $$D_{KL}(P \parallel Q) = \int p(x) \log \frac{p(x)}{q(x)} dx = \mathbb{E}_{x \sim P} \left[ \log \frac{p(x)}{q(x)} \right]$$
 
+Intuitively:
+- $P$ is the true distribution
+- $Q$ is the approximation/model
+- $\parallel$ indicates comparison of $P$ against $Q$, thus "parallel lines"
+
+
 ---
+
+## **2.5.2 Expanding the Lower Bound Terms**
+
+For the sake of time and current complexity, we will be skipping some of the derivations.
+One of them is the expansion of the ELBO, in KL divergence terms:
+
+$$ELBO= -\sum_{t=2}^T D_{KL}(\underbrace{q(x_{t-1} \mid x_t, x_0)}_{\text{tractable?}} \parallel \underbrace{p(x_{t-1} \mid x_t)}_{\text{tractable?}}) +  \text{other terms} $$
+
+**Key Takeaways**:
+- The ELBO can be expressed as a sum of KL divergences between the forward process and the reverse process at each time step, plus some additional terms.
+- The KL divergence terms measure how closely the reverse process $p_\theta$ approximates the forward process $q$ at each step, given the clean image $x_0$.
+
+---
+
+## **2.5.3 Show Tractability**
+
+3. Show lower bound is **tractable**:
+
+We need to show both:
+
+1. $q(x_{t-1} \mid x_t, x_0)$ is tractable
+2. $p(x_{t-1} \mid x_t)$ is tractable
+
+**For #1:**
+
+Using Bayes' theorem, we can re-express:
+
+$$q(x_{t-1} \mid x_t, x_0) = \frac{q(x_t \mid x_{t-1}, x_0) \overbrace{q(x_{t-1} \mid x_0)}^{\text{tractable}}}{\underbrace{q(x_t \mid x_0)}_{\text{tractable}}}$$
+
+Because $q$ is a Markovian process, we can say that:
+
+$$q(x_t \mid x_{t-1}, x_0) = q(x_t \mid x_{t-1})$$
+
+Which is also closed-form and tractable. Making the whole term **tractable**.
+
+**For #2:**
+
+$p$ is the reverse process that we can choose to be tractable by design.
+This can be justified via:
+- $x_t$ is sampled from $q$ and we know is tractable
+- $q(x_t \mid x_{t-1})$ is also a product of two Gaussians, making $q(x_{t-1} \mid x_t)$ approximately Gaussian over small time steps, thus tractable.
+
+With these in mind, $p_\theta$ could be designed to be a Gaussian distribution sampled w.r.t. $x_t$ and $\theta$.
+
+$$p_\theta(x_{t-1} \mid x_t) = \mathcal{N}(\mu_\theta(x_t), \Sigma_\theta(x_t))$$
+
 
 
 
