@@ -279,7 +279,7 @@ $=\underbrace{p(x_2 \mid x_1)}_{x_2 \text{ given } x_1}\times p(x_1)$
 
 $=\underbrace{p(x_1 \mid x_2)}_{x_1 \text{ given } x_2}\times p(x_2)$
 
-## **2.1.1 Joint Probability Distribution - Marginalization**
+### **2.1.1 Joint Probability Distribution - Marginalization**
 
 <div style="text-align: center;">
   <img src="assets/joint_marginalization.gif" alt="joint_marginalization" />
@@ -299,7 +299,7 @@ Applying for all the time steps:
 
 ---
 
-## **2.1.2 Joint Probability Distribution - Summarize**
+### **2.1.2 Joint Probability Distribution - Summarize**
 
 **Joint Probability Distribution**
 
@@ -348,7 +348,7 @@ How do we get here?
 
 ---
 
-## **2.4.1 Derivation**
+### **2.4.1 Derivation**
 
 Given a clean image, what is the trajectory that is given by $q$ ($q$ as in the forward process)?
 
@@ -362,7 +362,7 @@ $$p_\theta(x_0) = \int \frac{p_\theta(x_{0:T}) \times q(x_{1:T} \mid x_0)}{q(x_{
 
 ---
 
-## **2.4.2 General Identity to convert between: $\int \Leftrightarrow \mathbb{E}$**
+### **2.4.2 General Identity to convert between: $\int \Leftrightarrow \mathbb{E}$**
 
 A probability density function $g(x)$ i.e.
 
@@ -374,7 +374,7 @@ $$\mathbb{E}_{g}[f(x)] = \int f(x) g(x) dx$$
 
 ---
 
-## **2.4.3 Applying the identity**
+### **2.4.3 Applying the identity**
 
 $$p_\theta(x_0) = \int \overbrace{\frac{p_\theta(x_{0:T})}{q(x_{1:T} \mid x_0)}}^{f(x)} \times \underbrace{q(x_{1:T} \mid x_0)}_{g(x)} dx_{1:T}$$
 
@@ -388,7 +388,7 @@ Where do you go from here?
 
 ---
 
-## **2.4.4 Jensen's Inequality**
+### **2.4.4 Jensen's Inequality**
 
 Jensen's inequality is a commonly used trick that states, for a function $f$ and a random distribution $X$:
 
@@ -411,7 +411,7 @@ So for a random variable $X$, $\log(\mathbb{E}[X]) \geq \mathbb{E}[\log(X)]$
 
 ---
 
-## **2.4.5 Applying Jensen's Inequality**
+### **2.4.5 Applying Jensen's Inequality**
 
 $$p_\theta(x_0) = \mathbb{E}_{q(x_{1:T} \mid x_0)}\left[\frac{p_\theta(x_{0:T})}{q(x_{1:T} \mid x_0)}\right]$$
 
@@ -431,12 +431,12 @@ Now, we have found a lower bound for the value we wanted to maximise, we can jus
 
 ---
 
-## **2.4.6 What's Next?**
+### **2.4.6 What's Next?**
 
 1. **[DONE]** Derive a **lower bound** for the maximum likelihood objective $\log p_\theta(x_0)$.
 2. **[TBD]** Expand the lower bound terms
 3. **[TBD]** Show lower bound is **tractable**, meaning solvable in polynomial time at most.
-4. Deduce loss function $\Leftrightarrow$ **training objective**
+4. **[TBD]** Deduce loss function $\Leftrightarrow$ **training objective**
 
 ---
 
@@ -446,7 +446,7 @@ Now, we have found a lower bound for the value we wanted to maximise, we can jus
 
 ---
 
-## **2.5.1 KL Divergence**
+### **2.5.1 KL Divergence**
 
 Measurement of how one probability distribution $P$ is different from another probability distribution $Q$.
 
@@ -466,7 +466,7 @@ Intuitively:
 
 ---
 
-## **2.5.2 Expanding the Lower Bound Terms**
+### **2.5.2 Expanding the Lower Bound Terms**
 
 For the sake of time and current complexity, we will be skipping some of the derivations.
 One of them is the expansion of the ELBO, in KL divergence terms:
@@ -479,7 +479,7 @@ $$ELBO= -\sum_{t=2}^T D_{KL}(\underbrace{q(x_{t-1} \mid x_t, x_0)}_{\text{tracta
 
 ---
 
-## **2.5.3 Show Tractability**
+## **2.6 Show Tractability**
 
 3. Show lower bound is **tractable**:
 
@@ -511,27 +511,133 @@ With these in mind, $p_\theta$ could be designed to be a Gaussian distribution s
 
 $$p_\theta(x_{t-1} \mid x_t) = \mathcal{N}(\mu_\theta(x_t), \Sigma_\theta(x_t))$$
 
+---
 
+## **2.7 Deduce Loss Function**
+
+4. Deduce loss function $\Leftrightarrow$ **training objective**
+
+If you replace previously calculated terms into KL Divergence formula, it turns out that most of the terms cancel out and we are left with:
+
+$$\mathcal{L}_{\text{DDPM}} = \mathbb{E}_{t, x_0, \epsilon} \left[\| \epsilon - \epsilon_\theta(\sqrt{\bar\alpha_t} x_t + \sqrt{1 - \bar\alpha_t} \epsilon, t) \|^2 \right]$$
+
+Where variables are sampled as follows:
+
+- $t \sim \mathcal{U}(1, T)$
+- $x_0 \sim q(x_0)$
+- $\epsilon \sim \mathcal{N}(0, I)$
+
+**Key Points**: Provided a noisy image $x_t$, loss function is an indicator of:
+
+- Computing the noise $\epsilon$ **added** to $x_0$ to get $x_t$.
+- Comparing the noise $\epsilon$ with the **noise predicted** by the model $\epsilon_\theta$ given $x_t$ and $t$.
+
+Note: $t$ just states how much noise is added.
+
+---
+
+## **[OPTIONAL] 2.8 Derivation of ELBO to KL Divergence form**
+
+**ELBO after applying Jensen's Inequality**
+
+$$\log p_\theta(x_0) \geq \mathbb{E}_{q(x_{1:T} \mid x_0)} \left[ \log \frac{p_\theta(x_{0:T}, x_0)}{q(x_{1:T} \mid x_0)} \right] $$
+
+**Factorize Reverse Process:**
+
+$$p_\theta(x_{0:T}) = p(x_T) \prod_{t=1}^T p_\theta(x_{t-1} \mid x_t) $$
+
+**Forward Process:**
+
+$$q(x_{1:T} \mid x_0) = \prod_{t=1}^T q(x_t \mid x_{t-1}) $$
+
+**Plug into ELBO formula:**
+
+$$\mathcal{L}=\mathbb{E}_{q} \left[ \log \frac{p(x_T)\times\prod_{t=1}^T p_\theta(x_{t-1} \mid x_t)}{\prod_{t=1}^T q(x_t \mid x_{t-1})} \right] $$
+
+**Apply log properties:**
+
+$$\log(\frac{a\times b}{c}) = \log(a) + \log(b) - \log(c)$$
+
+and
+
+$$\log \prod_{t=1}^T a_t = \sum_{t=1}^T \log(a_t)$$
+
+**So the ELBO becomes**
+
+$$\mathcal{L}= \mathbb{E}_{q} \left[ \log p(x_T) + \sum_{t=1}^T \log p_\theta(x_{t-1} \mid x_t) - \sum_{t=1}^T \log q(x_t \mid x_{t-1}) \right] $$
+
+Rearrange terms considering the forward chain below:
+
+$$q(x_{1:T} \mid x_0) = q(x_T \mid x_0)\prod_{t=2}^T q(x_{t-1} \mid x_t, x_0) $$
+
+Plugging this into the ELBO formula:
+
+$$\mathcal{L} = \mathbb{E}_{q} \left[ \log \frac{p(x_T)}{q(x_T \mid x_0)} + \sum_{t=2}^T \log \frac{p_\theta(x_{t-1} \mid x_t)}{q(x_{t-1} \mid x_t, x_0)} + \log p_\theta(x_0 \mid x_1) \right] $$
+
+**Use the definition of KL Divergence:**
+
+$$D_{\text{KL}}(q \parallel p) = \mathbb{E}_q \left[ \log \frac{q}{p} \right] $$
+
+Therefore,
+
+$$\mathbb{E}_{q} \left[ \log \frac{p_\theta(x_{t-1} \mid x_t)}{q(x_{t-1} \mid x_t, x_0)} \right] = -D_{\text{KL}}(q(x_{t-1} \mid x_t, x_0) \parallel p_\theta(x_{t-1} \mid x_t))$$
+
+**So final form of ELBO becomes:**
+
+$$
+\boxed{
+\mathcal{L} = \underbrace{-\sum_{t=2}^T D_{\text{KL}}(q(x_{t-1} \mid x_t, x_0) \parallel p_\theta(x_{t-1} \mid x_t))}_{\text{lower bound terms}} + \underbrace{\mathbb{E}_{q(x_1 \mid x_0)} \left[ \log p_\theta(x_0 \mid x_1) \right] - D_{\text{KL}}(q(x_T \mid x_0) \parallel p(x_T))
+}_{\text{other terms}}}
+$$
 
 
 ---
 
-# **3. Variationality**
+# **3. What has been covered so far?**
+
+## **3.1 Forward Process ($q$)**
+
+- Fixed, Gaussian, Markov chain that gradually adds noise to data:
+  
+  $$q(x_t \mid x_{t-1}) = \mathcal{N}(x_t;\sqrt{1-\beta_t}x_{t-1}, \beta_t I)$$
+
+- Can be expressed in closed form:
+
+  $$x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t}\epsilon$$
+
+- Key properties:
+  - Adds Gaussian noise progressively
+  - Leads to $x_T \approx \mathcal{N}(0, I)$
+  - Closed form and fully tractable sampling
+
+---
+
+## **3.2 Reverse Process ($p_\theta$)**
+
+- Learned Markov chain that denoises:
+
+  $$p_\theta(x_{t-1} \mid x_t) = \mathcal{N}(\mu_\theta(x_t, t), \Sigma_\theta(x_t, t))$$
+
+- Objective:
+  - Approximate the true reverse distribution of the forward process
+
+- Training signal:
+  - Derived via ELBO → KL minimization
+  - Minimize the expectation of the L2 distance between true and predicted noise at arbitrary time steps: 
+
+  $$\mathcal{L} = \mathbb{E}_{t, x_0, \epsilon} \left[\|\epsilon - \epsilon_\theta(x_t, t)\|^2\right]$$
+
+---
+
+# **3. Training**
 
 
 ---
 
-# **4. Training**
+# **4. Inference**
 
 
 ---
-
-# **5. Inference**
-
-
----
-
-# **6. Sampling ---**
 
 
 # **References**
