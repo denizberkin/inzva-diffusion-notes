@@ -599,7 +599,7 @@ $$
 
 - Can be expressed in closed form:
 
-  $$x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t}\epsilon$$
+  $$\boxed{x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t}\epsilon} \text{ where } \bar\alpha_t = \prod_{t=1}^T (1 - \beta_t)$$
 
 - Key properties:
   - Adds Gaussian noise progressively
@@ -621,17 +621,47 @@ $$
   - Derived via ELBO → KL minimization
   - Minimize the expectation of the L2 distance between true and predicted noise at arbitrary time steps: 
 
-$$\mathcal{L} = \mathbb{E}_{t, x_0, \epsilon} \left[\|\epsilon - \epsilon_\theta(x_t, t)\|^2\right]$$
+$$\boxed{\mathcal{L}_{\text{DDPM}} = \mathbb{E}_{t, x_0, \epsilon} \left[\|\epsilon - \epsilon_\theta(x_t, t)\|^2\right]}$$
 
 ---
 
 # **3. Training**
+
+1. Sample using $x_0, \quad \epsilon \sim \mathcal{N}(0, I), \quad t\sim \mathcal{U}(1, T)$
+
+2. Use $x_t$ and $t$, **predict** $\epsilon$ via $\epsilon_\theta(x_t, t)$
+
+3. Compute the **loss** $\Rightarrow\mathcal{L} = \|\epsilon - \epsilon_\theta(x_t, t)\|^2$ and **backpropagate** through $\epsilon_\theta$
+
+
+<div style="text-align: center;">
+  <img src="assets/training_sample.svg" alt="train_sample" />
+</div>
 
 
 ---
 
 # **4. Inference**
 
+1. Sample your **noise** $x_T \sim \mathcal{N}(0, I)$
+
+2. Iteratively update from $t$ to $t-1$ using reverse process
+
+3. Reach from $T$ to $0$ and obtain generated sample $x_0$
+
+
+- Most of the math and proofs I would like to cover are done.
+
+**What we will do next?**
+1. Intuitively check faster sampling via **DDIM**
+2. Implement the **DDPM** in code and observe how it works in practice.
+3. Check on text conditioning and classifier-free guidance to improve sample sanity w.r.t. condition.
+4. Check **Stable Diffusion** briefly and compare where it differs from the DDPMs.
+5. If time permits, check on other conditioning methods and talk about newer models
+  - Super Resolution
+  - Inpainting
+  - Depth to Image
+  - etc.
 
 ---
 
@@ -658,7 +688,8 @@ $$\mathcal{L} = \mathbb{E}_{t, x_0, \epsilon} \left[\|\epsilon - \epsilon_\theta
   https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
 
 
-
+- <a id="null-text-inversion"></a> **\[x] Null-Text Inversion**  
+  https://null-text-inversion.github.io/
 
  <!-- Actual referred list using [text][referral_number]  -->
 
@@ -667,3 +698,5 @@ $$\mathcal{L} = \mathbb{E}_{t, x_0, \epsilon} \left[\|\epsilon - \epsilon_\theta
 [3]: https://www.youtube.com/@intelligentsystemslab907/videos
 [4]: https://en.wikipedia.org/wiki/Jensen%27s_inequality
 [5]: https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
+
+[x]: https://null-text-inversion.github.io/

@@ -11,3 +11,5 @@ __pycache__/*
 tmp_diffusion_frames/
 media/
 .vscode/
+data/
+ddpm_outputs/
