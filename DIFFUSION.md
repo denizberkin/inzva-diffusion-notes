@@ -665,6 +665,11 @@ $$\boxed{\mathcal{L}_{\text{DDPM}} = \mathbb{E}_{t, x_0, \epsilon} \left[\|\epsi
 
 ---
 
+# **5. Denoising Diffusion Implicit Models (DDIM)**
+
+TODO: If possible
+
+---
 
 # **References**
 
@@ -687,6 +692,10 @@ $$\boxed{\mathcal{L}_{\text{DDPM}} = \mathbb{E}_{t, x_0, \epsilon} \left[\|\epsi
   Kullback–Leibler divergence  
   https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
 
+- <a id="elbo"></a> **\[6] DDIM**  
+  Variational Inference: A Review for Statisticians  
+  https://arxiv.org/abs/2010.02502
+
 
 - <a id="null-text-inversion"></a> **\[x] Null-Text Inversion**  
   https://null-text-inversion.github.io/
@@ -698,5 +707,6 @@ $$\boxed{\mathcal{L}_{\text{DDPM}} = \mathbb{E}_{t, x_0, \epsilon} \left[\|\epsi
 [3]: https://www.youtube.com/@intelligentsystemslab907/videos
 [4]: https://en.wikipedia.org/wiki/Jensen%27s_inequality
 [5]: https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
+[6]: https://arxiv.org/abs/2010.02502
 
 [x]: https://null-text-inversion.github.io/
