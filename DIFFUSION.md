@@ -38,7 +38,9 @@
   - [**[OPTIONAL] 2.8 Derivation of ELBO to KL Divergence form**](#optional-28-derivation-of-elbo-to-kl-divergence-form)
 
 - [**3. What has been covered so far?**](#3-what-has-been-covered-so-far)
+  
   - [**3.1 Forward Process ($q$)**](#31-forward-process-q)
+
   - [**3.2 Reverse Process ($p_\theta$)**](#32-reverse-process-ptheta)
 
 - [**4. Training**](#4-training)
