@@ -174,9 +174,9 @@ That is why diffusion models can be seen as **score-based generative models**.
 
 - Learns:
 
-  $$
-  \nabla_x \log p(x)
-  $$
+$$
+\nabla_x \log p(x)
+$$
 
 - Instead of learning the probability density directly.
 - The score tells us the direction toward higher probability.
@@ -195,15 +195,15 @@ That is why diffusion models can be seen as **score-based generative models**.
 
 - DDPM predicts noise:
 
-  $$
-  \epsilon_\theta(x_t, t)
-  $$
+$$
+\epsilon_\theta(x_t, t)
+$$
 
 - Score matching predicts the gradient of log-density:
 
-  $$
-  s_\theta(x_t, t) \approx \nabla_{x_t} \log p_t(x_t)
-  $$
+$$
+s_\theta(x_t, t) \approx \nabla_{x_t} \log p_t(x_t)
+$$
 
 - These are closely connected because the noise direction determines the score direction.
 
