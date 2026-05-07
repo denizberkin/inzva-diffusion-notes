@@ -6,6 +6,8 @@ import numpy as np
 from PIL import Image
 
 from manim import (
+    LEFT,
+    UL,
     MovingCameraScene,
     Arrow,
     BOLD,
@@ -121,7 +123,7 @@ def make_density_image(
     path: str | Path,
     x_range: tuple[float, float],
     y_range: tuple[float, float],
-    width: int = 1600,
+    width: int = 800,
 ) -> None:
     """
     Creates a contour-like density background as a PNG.
@@ -251,15 +253,15 @@ class ScoreMatchingVectorField(MovingCameraScene):
         )
 
         label_group = VGroup(title, formula, subtitle)
-        label_group.arrange(DOWN, aligned_edge="LEFT", buff=0.16)
-        label_group.to_corner(np.array([-1, 1, 0]), buff=0.38)
+        label_group.arrange(DOWN, aligned_edge=LEFT, buff=0.16)
+        label_group.to_corner(UL, buff=0.38)
 
         panel = RoundedRectangle(
             corner_radius=0.18,
-            width=label_group.width + 0.55,
-            height=label_group.height + 0.42,
+            width=label_group.width,
+            height=label_group.height * 0.5,
         )
-        panel.move_to(label_group)
+        panel.move_to(label_group).shift(0.08 * LEFT + 0.04 * DOWN)
         panel.set_fill("#05030e", opacity=0.62)
         panel.set_stroke("#ffffff", opacity=0.12, width=1.0)
 

@@ -6,6 +6,7 @@
 
 - [0. Idea](#0-idea)
 - [1. Score Function](#1-score-function)
+  - [1.1 Key Intuition for Score Functions](#11-key-intuition-for-score-functions)
 - [2. Score Matching Objective](#2-score-matching-objective)
 - [3. Denoising Score Matching](#3-denoising-score-matching)
 - [4. Connection to Diffusion Models](#4-connection-to-diffusion-models)
@@ -68,6 +69,10 @@ $$\nabla \log p(x) = \frac{\nabla p(x)}{p(x)}$$
 
 ## **1.1 Key Intuition for Score Functions**:
 
+<div style="text-align: center;">
+  <img src="assets/sm_gradients.gif" alt="sm_gradients"/>
+</div>
+
 ---
 
 # **2. Score Matching Objective**
@@ -119,14 +124,12 @@ $$
 
 So the denoising score matching objective becomes:
 
-$$\mathcal{L}_{\text{DSM}} = \mathbb{E}_{x, \tilde{x}}
-\left[
+$$\boxed{\mathcal{L}_{\text{DSM}} = \mathbb{E}_{x, \tilde{x}}
 \left\|
 s_\theta(\tilde{x}, \sigma)
 +
 \frac{\tilde{x} - x}{\sigma^2}
-\right\|^2
-\right]
+\right\|^2}
 $$
 
 **Key intuition**:
@@ -151,11 +154,9 @@ with loss:
 
 $$
 \mathcal{L}_{\text{DDPM}} = \mathbb{E}_{t, x_0, \epsilon}
-\left[
 \left\|
 \epsilon - \epsilon_\theta(x_t, t)
 \right\|^2
-\right]
 $$
 
 This is closely related to score matching.
