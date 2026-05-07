@@ -22,10 +22,10 @@
     - [**2.1.1 Joint Probability Distribution - Marginalization**](#211-joint-probability-distribution---marginalization)
     - [**2.1.2 Joint Probability Distribution - Summarize**](#212-joint-probability-distribution---summarize)
   - [**2.2 Back to the Objective**](#22-back-to-the-objective)
-  - [**2.3 Possible Strategy on how to compute $\log p_\theta(x_0)$**](#23-possible-strategy-on-how-to-compute-log-pthetax_0)
+  - [**2.3 Possible Strategy on how to compute log(p-theta)**](#23-possible-strategy-on-how-to-compute-log-pthetax_0)
   - [**2.4 ELBO (1)**](#24-elbo-1)
     - [**2.4.1 Derivation**](#241-derivation)
-    - [**2.4.2 General Identity to convert between: $\int \Leftrightarrow \mathbb{E}$**](#242-general-identity-to-convert-between-int-leftrightarrow-mathbbe)
+    - [**2.4.2 Integral ↔ Expectation Identity**](#242-general-identity-to-convert-between-int-leftrightarrow-mathbbe)
     - [**2.4.3 Applying the identity**](#243-applying-the-identity)
     - [**2.4.4 Jensen's Inequality**](#244-jensens-inequality)
     - [**2.4.5 Applying Jensen's Inequality**](#245-applying-jensens-inequality)
@@ -39,9 +39,9 @@
 
 - [**3. What has been covered so far?**](#3-what-has-been-covered-so-far)
   
-  - [**3.1 Forward Process ($q$)**](#31-forward-process-q)
+  - [**3.1 Forward Process (q)**](#31-forward-process-q)
 
-  - [**3.2 Reverse Process ($p_\theta$)**](#32-reverse-process-ptheta)
+  - [**3.2 Reverse Process (p-theta)**](#32-reverse-process-ptheta)
 
 - [**4. Training**](#4-training)
 - [**5. Inference**](#5-inference)
@@ -644,7 +644,7 @@ $$
 
 - Can be expressed in closed form:
 
-  $$\boxed{x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t}\epsilon} \text{ where } \bar\alpha_t = \prod_{t=1}^T (1 - \beta_t)$$
+$$\boxed{x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t}\epsilon} \text{ where } \bar\alpha_t = \prod_{t=1}^T (1 - \beta_t)$$
 
 - Key properties:
   - Adds Gaussian noise progressively
@@ -754,4 +754,4 @@ TODO: If possible
 [5]: https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
 [6]: https://arxiv.org/abs/2010.02502
 
-[x]: https://null-text-inversion.github.io/
+[-1]: https://null-text-inversion.github.io/
