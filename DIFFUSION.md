@@ -3,10 +3,53 @@
 
 # **Table of Contents**
 
+- [**0. Outline**](#0-outline)
+  - [**0.2 Idea**](#02-idea)
+  - [**0.3 Generate from Noise**](#03-generate-from-noise)
+  - [**0.4 Intuition**](#04-intuition)
+  - [**0.5 Dimensionality & Probability Distribution**](#05-dimensionality--probability-distribution)
+  - [**0.6 Covariance?**](#06-covariance)
+
+- [**1. Forward Process**](#1-forward-process)
+  - [**1.1 Representing Noise**](#11-representing-noise)
+  - [**1.2 Single Forward Step**](#12-single-forward-step)
+  - [**1.3 Deriving the Forward Process**](#13-deriving-the-forward-process)
+  - [**1.4 Diving Deeper**](#14-diving-deeper)
+
+- [**2. Reverse Process**](#2-reverse-process)
+  - [**2.0 Objective**](#20-objective)
+  - [**2.1 Joint Probability Distributions**](#21-joint-probability-distributions)
+    - [**2.1.1 Joint Probability Distribution - Marginalization**](#211-joint-probability-distribution---marginalization)
+    - [**2.1.2 Joint Probability Distribution - Summarize**](#212-joint-probability-distribution---summarize)
+  - [**2.2 Back to the Objective**](#22-back-to-the-objective)
+  - [**2.3 Possible Strategy on how to compute $\log p_\theta(x_0)$**](#23-possible-strategy-on-how-to-compute-log-pthetax_0)
+  - [**2.4 ELBO (1)**](#24-elbo-1)
+    - [**2.4.1 Derivation**](#241-derivation)
+    - [**2.4.2 General Identity to convert between: $\int \Leftrightarrow \mathbb{E}$**](#242-general-identity-to-convert-between-int-leftrightarrow-mathbbe)
+    - [**2.4.3 Applying the identity**](#243-applying-the-identity)
+    - [**2.4.4 Jensen's Inequality**](#244-jensens-inequality)
+    - [**2.4.5 Applying Jensen's Inequality**](#245-applying-jensens-inequality)
+    - [**2.4.6 What's Next?**](#246-whats-next)
+  - [**2.5 Expanding the ELBO (2)**](#25-expanding-the-elbo-2)
+    - [**2.5.1 KL Divergence**](#251-kl-divergence)
+    - [**2.5.2 Expanding the Lower Bound Terms**](#252-expanding-the-lower-bound-terms)
+  - [**2.6 Show Tractability (3)**](#26-show-tractability-3)
+  - [**2.7 Deduce Loss Function (4)**](#27-deduce-loss-function-4)
+  - [**[OPTIONAL] 2.8 Derivation of ELBO to KL Divergence form**](#optional-28-derivation-of-elbo-to-kl-divergence-form)
+
+- [**3. What has been covered so far?**](#3-what-has-been-covered-so-far)
+  - [**3.1 Forward Process ($q$)**](#31-forward-process-q)
+  - [**3.2 Reverse Process ($p_\theta$)**](#32-reverse-process-ptheta)
+
+- [**3. Training**](#3-training)
+- [**4. Inference**](#4-inference)
+- [**5. Denoising Diffusion Implicit Models (DDIM)**](#5-denoising-diffusion-implicit-models-ddim)
+- [**References**](#references)
+
 
 ---
 
-## **0.1 Outline**
+## **0. Outline**
 
 - Initial focus will be on the unconditioned generation for simplicity.
 
