@@ -340,7 +340,11 @@ Applying for all the time steps:
   <img src="assets/full_marginalization.gif" alt="full_marginalization" />
 </div>
 
-# **TODO**: ADD 3D VISUAL FOR JOINT PROBABILITY DISTRIBUTION
+**Here is a 3D version to observe two joint gaussians:**
+
+<div style="text-align: center;">
+  <img src="assets/3d_joint.gif" alt="3d_joint" />
+</div>
 
 ---
 
