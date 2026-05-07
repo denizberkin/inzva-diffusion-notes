@@ -41,9 +41,9 @@
   - [**3.1 Forward Process ($q$)**](#31-forward-process-q)
   - [**3.2 Reverse Process ($p_\theta$)**](#32-reverse-process-ptheta)
 
-- [**3. Training**](#3-training)
-- [**4. Inference**](#4-inference)
-- [**5. Denoising Diffusion Implicit Models (DDIM)**](#5-denoising-diffusion-implicit-models-ddim)
+- [**4. Training**](#4-training)
+- [**5. Inference**](#5-inference)
+- [**6. Denoising Diffusion Implicit Models (DDIM)**](#6-denoising-diffusion-implicit-models-ddim)
 - [**References**](#references)
 
 
@@ -668,7 +668,7 @@ $$\boxed{\mathcal{L}_{\text{DDPM}} = \mathbb{E}_{t, x_0, \epsilon} \left[\|\epsi
 
 ---
 
-# **3. Training**
+# **4. Training**
 
 1. Sample using $x_0, \quad \epsilon \sim \mathcal{N}(0, I), \quad t\sim \mathcal{U}(1, T)$
 
@@ -684,7 +684,7 @@ $$\boxed{\mathcal{L}_{\text{DDPM}} = \mathbb{E}_{t, x_0, \epsilon} \left[\|\epsi
 
 ---
 
-# **4. Inference**
+# **5. Inference**
 
 1. Sample your **noise** $x_T \sim \mathcal{N}(0, I)$
 
@@ -708,7 +708,7 @@ $$\boxed{\mathcal{L}_{\text{DDPM}} = \mathbb{E}_{t, x_0, \epsilon} \left[\|\epsi
 
 ---
 
-# **5. Denoising Diffusion Implicit Models (DDIM)**
+# **6. Denoising Diffusion Implicit Models (DDIM)**
 
 TODO: If possible
 
