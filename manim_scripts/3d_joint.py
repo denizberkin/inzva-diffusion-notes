@@ -1,13 +1,15 @@
 from manim import (
+    TEAL_B,
     ThreeDScene,
     BOLD, RIGHT, UP,
     Create, Write, FadeIn,
     ThreeDAxes, Surface, ParametricFunction, Line,
     Text, MathTex,
-    WHITE, TEAL_A, TEAL_D,
-    TEAL_E, YELLOW, ORANGE, BLUE_B, BLUE_D, BLUE_E,
-    DEGREES,
+    WHITE, TEAL_A, BLUE_B,
+    TEAL_D, TEAL_E, BLUE_D, BLUE_E,  # noqa: F401
+    DEGREES, ManimColor
 )
+
 import numpy as np
 
 
@@ -39,13 +41,16 @@ class JointGaussian3D(ThreeDScene):
         def joint_pdf(u, v):
             return 1 / (2 * np.pi) * np.exp(-0.5 * (u**2 + v**2))
 
+
+        almost_transparent = ManimColor((1, 1, 1, 0.02))
         surface = Surface(
             lambda u, v: axes.c2p(u, v, joint_pdf(u, v)),
             u_range=[-3, 3],
             v_range=[-3, 3],
             resolution=(36, 36),
-            fill_opacity=0.65,
-            checkerboard_colors=[ORANGE, YELLOW],
+            fill_opacity=0.45,
+            checkerboard_colors=[TEAL_B, almost_transparent],
+            # fill_color=TEAL_B,
             stroke_color=WHITE,
             stroke_width=0.25,
         )
@@ -104,27 +109,27 @@ class JointGaussian3D(ThreeDScene):
         )
 
         # Optional vertical projection slices
-        x_slice = Surface(
-            lambda u, z: axes.c2p(u, 0, z),
-            u_range=[-3, 3],
-            v_range=[0, 0.16],
-            resolution=(24, 6),
-            fill_opacity=0.18,
-            checkerboard_colors=[TEAL_E, TEAL_D],
-            stroke_width=0.2,
-        )
+        # x_slice = Surface(
+        #     lambda u, z: axes.c2p(u, 0, z),
+        #     u_range=[-3, 3],
+        #     v_range=[0, 0.16],
+        #     resolution=(24, 6),
+        #     fill_opacity=0.18,
+        #     checkerboard_colors=[TEAL_E, TEAL_D],
+        #     stroke_width=0.2,
+        # )
 
-        y_slice = Surface(
-            lambda v, z: axes.c2p(0, v, z),
-            u_range=[-3, 3],
-            v_range=[0, 0.16],
-            resolution=(24, 6),
-            fill_opacity=0.18,
-            checkerboard_colors=[BLUE_E, BLUE_D],
-            stroke_width=0.2,
-        )
+        # y_slice = Surface(
+        #     lambda v, z: axes.c2p(0, v, z),
+        #     u_range=[-3, 3],
+        #     v_range=[0, 0.16],
+        #     resolution=(24, 6),
+        #     fill_opacity=0.18,
+        #     checkerboard_colors=[BLUE_E, BLUE_D],
+        #     stroke_width=0.2,
+        # )
 
-        self.play(FadeIn(x_slice), FadeIn(y_slice), run_time=1)
+        # self.play(FadeIn(x_slice), FadeIn(y_slice), run_time=1)
 
         self.begin_ambient_camera_rotation(rate=0.22)
         self.wait(8)

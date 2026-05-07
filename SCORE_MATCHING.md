@@ -51,16 +51,22 @@ Intuitively:
 So instead of modeling:
 
 $$
-p(x)
+p(x) \Rightarrow \nabla_x p(x)
 $$
 
-we model:
+For purposes of numerical stability and tractability (again!), we model by taking its logarithm:
+
+**Score Function**
 
 $$
-s_\theta(x) \approx \nabla_x \log p(x)
+\boxed{s_\theta(x) \approx \nabla_x \log p(x)}
 $$
 
-where $s_\theta$ is a neural network.
+Logarithm of $p(x)$ still points in the same direction as $p(x)$ as:
+
+$$\nabla \log p(x) = \frac{\nabla p(x)}{p(x)}$$
+
+## **1.1 Key Intuition for Score Functions**:
 
 ---
 
@@ -70,11 +76,9 @@ The ideal objective would be:
 
 $$
 \mathcal{L}_{\text{SM}}=\mathbb{E}_{x \sim p_{\text{data}}}
-\left[
 \left\|
 s_\theta(x) - \nabla_x \log p_{\text{data}}(x)
 \right\|^2
-\right]
 $$
 
 Meaning:
