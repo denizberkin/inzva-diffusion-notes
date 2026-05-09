@@ -171,6 +171,11 @@ So predicting noise is basically another way of learning the score.
 
 That is why diffusion models can be seen as **score-based generative models**.
 
+<div style="text-align: center;">
+  <img src="assets/sm_network_architecture.gif" alt="sm_network_architecture"/>
+</div>
+
+
 ---
 
 # **5. Summary**
